@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
                         Toast.makeText(getApplication(), "OnCameraChangeOverride", Toast.LENGTH_SHORT).show();
                     }
                 });
+                mCaffeinatedMap.getClusteringSettings().setClusterSize(600);
             }
         }
     }

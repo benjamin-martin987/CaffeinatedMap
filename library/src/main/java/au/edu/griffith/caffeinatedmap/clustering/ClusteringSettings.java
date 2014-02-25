@@ -17,7 +17,7 @@ public class ClusteringSettings {
         return mClusterOptions;
     }
 
-    public ClusteringSettings clusterSize(double size) {
+    public ClusteringSettings setClusterSize(double size) {
         mClusterSize = size;
         return this;
     }

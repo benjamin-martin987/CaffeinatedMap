@@ -30,7 +30,7 @@ public class CaffeinatedMapFragment extends MapFragment {
         if (mCaffeinatedMap == null) {
             GoogleMap googleMap = getMap();
             if (googleMap != null) {
-                mCaffeinatedMap = new CaffeinatedMap(new WeakReference<GoogleMap>(googleMap), new CaffeinatedOptions());
+                mCaffeinatedMap = new CaffeinatedMap(new WeakReference<GoogleMap>(googleMap));
             }
         }
         return mCaffeinatedMap;

@@ -21,15 +21,19 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
     private HashMap<String, Marker> mVisibleClusters;
     private float mZoomLevel;
 
-    public ClusterHandler(WeakReference<GoogleMap> mapReference, ClusteringSettings settings) {
+    public ClusterHandler(WeakReference<GoogleMap> mapReference) {
         mMapReference = mapReference;
-        mSettings = (settings != null) ? settings : new ClusteringSettings().setClusterOptions(new ClusterOptions());
+        mSettings = new ClusteringSettings().setClusterOptions(new ClusterOptions());
 
         mClusterables = new ArrayList<Clusterable>();
         mVisibleClusters = new HashMap<String, Marker>();
         mZoomLevel = 0f;
 
         // TODO Clusterable Types?
+    }
+
+    public ClusteringSettings getSettings() {
+        return mSettings;
     }
 
     public void addClusterable(Clusterable clusterable) {

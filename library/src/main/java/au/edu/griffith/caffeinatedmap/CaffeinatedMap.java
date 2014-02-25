@@ -8,17 +8,16 @@ import java.util.List;
 
 import au.edu.griffith.caffeinatedmap.clustering.ClusterHandler;
 import au.edu.griffith.caffeinatedmap.clustering.Clusterable;
+import au.edu.griffith.caffeinatedmap.clustering.ClusteringSettings;
 
 public class CaffeinatedMap extends BaseCaffeinatedMap implements IGoogleMap.OnCameraChangeListener {
 
     private GoogleMap.OnCameraChangeListener mCameraChangeListener;
-    private CaffeinatedOptions mOptions;
     private ClusterHandler mClusterHandler;
 
-    public CaffeinatedMap(WeakReference<GoogleMap> mapReference, CaffeinatedOptions options) {
+    public CaffeinatedMap(WeakReference<GoogleMap> mapReference) {
         super(mapReference);
-        mOptions = (options != null) ? options : new CaffeinatedOptions();
-        setUpHandlers();
+        mClusterHandler = new ClusterHandler(mMapReference);
         super.setOnCameraChangeListener(this);
     }
 
@@ -28,10 +27,8 @@ public class CaffeinatedMap extends BaseCaffeinatedMap implements IGoogleMap.OnC
         }
     }
 
-    private void setUpHandlers() {
-        if (mOptions.isClusteringEnabled()) {
-            mClusterHandler = new ClusterHandler(mMapReference, mOptions.getClusteringSetting());
-        }
+    public ClusteringSettings getClusteringSettings() {
+        return (mClusterHandler != null) ? mClusterHandler.getSettings() : null;
     }
 
     @Override
