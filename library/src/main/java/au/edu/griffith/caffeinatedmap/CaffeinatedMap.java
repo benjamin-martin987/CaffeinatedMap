@@ -11,7 +11,6 @@ import au.edu.griffith.caffeinatedmap.clustering.Clusterable;
 
 public class CaffeinatedMap extends BaseCaffeinatedMap implements IGoogleMap.OnCameraChangeListener {
 
-
     private OnCameraChangeListener mCameraChangeListener;
 
     private ClusterHandler mClusterHandler;

@@ -11,13 +11,14 @@ import au.edu.griffith.caffeinatedmap.clustering.ClusterBuildTask.BuildTaskArgs;
 
 public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
 
+    private static final double PIXEL_DISTANCE = 300;
+
     public static class BuildTaskArgs {
         public Projection projection;
         public List<Clusterable> clusterables;
     }
 
     private BuildTaskCallback mCallback;
-    private double mPixelDistance = 300;
 
     public ClusterBuildTask(BuildTaskCallback callback) {
         mCallback = callback;
@@ -36,7 +37,7 @@ public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluste
                     boolean addedToCluster = false;
 
                     for (Cluster cluster : clusters) {
-                        if (cluster.getPixelDistanceFrom(clusterable) < mPixelDistance) {
+                        if (cluster.getPixelDistanceFrom(clusterable) < PIXEL_DISTANCE) {
                             cluster.add(clusterable);
                             addedToCluster = true;
                             break;

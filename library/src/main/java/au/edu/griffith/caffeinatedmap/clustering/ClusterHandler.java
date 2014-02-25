@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
@@ -16,11 +17,13 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
 
     private List<Clusterable> mClusterables;
     private List<Cluster> mCurrentClusters;
+    private HashMap<String, Marker> mVisibleClusters;
     private float mZoomLevel;
 
     public ClusterHandler(WeakReference<GoogleMap> mapReference) {
         mMapReference = mapReference;
         mClusterables = new ArrayList<Clusterable>();
+        mVisibleClusters = new HashMap<String, Marker>();
         mZoomLevel = 0f;
 
         // TODO Clusterable Types?
@@ -54,7 +57,6 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
             float zoom = googleMap.getCameraPosition().zoom;
             if ((int) mZoomLevel != (int) zoom) {
                 mZoomLevel = zoom;
-                // TODO Build Clusters
                 ClusterBuildTask.BuildTaskArgs buildTaskArgs = new ClusterBuildTask.BuildTaskArgs();
                 buildTaskArgs.projection = googleMap.getProjection();
                 buildTaskArgs.clusterables = mClusterables;
@@ -75,8 +77,6 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
         if (googleMap != null && mCurrentClusters != null) {
             LatLngBounds visibleBounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
 
-            //googleMap.clear(); // TODO Remove later!
-
             for (Cluster cluster : mCurrentClusters) {
                 if (visibleBounds.contains(cluster.getPosition())) {
                     MarkerOptions options = new MarkerOptions();
@@ -91,19 +91,41 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
                         // TODO Polygons
                     }
 
-                    Marker marker = googleMap.addMarker(options);
-                    // TODO Store marker
+                    addClusterToMap(cluster.getId(), options);
                 } else {
-                    // TODO Remove marker
+                    removeClusterFromMap(cluster.getId());
                 }
             }
         }
     }
 
+    private void addClusterToMap(String id, MarkerOptions options) {
+        if (!mVisibleClusters.containsKey(id)) {
+            GoogleMap googleMap = mMapReference.get();
+            if (googleMap != null) {
+                mVisibleClusters.put(id, googleMap.addMarker(options));
+            }
+        }
+    }
+
+    private void removeClusterFromMap(String id) {
+        if (mVisibleClusters.containsKey(id)) {
+            mVisibleClusters.get(id).remove();
+            mVisibleClusters.remove(id);
+        }
+    }
+
+    private void removeAllClustersFromMap() {
+        for (Marker marker : mVisibleClusters.values()) {
+            marker.remove();
+        }
+        mVisibleClusters = new HashMap<String, Marker>();
+    }
+
     @Override
     public void onBuildTaskReturn(List<Cluster> clusters) {
         mCurrentClusters = clusters;
-        // TODO Remove all markers
+        removeAllClustersFromMap();
         updateVisibleClusters();
     }
 }
