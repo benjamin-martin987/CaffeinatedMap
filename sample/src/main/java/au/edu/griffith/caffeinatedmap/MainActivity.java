@@ -3,6 +3,10 @@ package au.edu.griffith.caffeinatedmap;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.CameraPosition;
 
 public class MainActivity extends Activity {
 
@@ -41,6 +45,12 @@ public class MainActivity extends Activity {
             mCaffeinatedMap = mMapFragment.getCaffeinatedMap();
             if (mCaffeinatedMap != null) {
                 mCaffeinatedMap.setMyLocationEnabled(true);
+                mCaffeinatedMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(CameraPosition cameraPosition) {
+                        Toast.makeText(getApplication(), "OnCameraChangeOverride", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }

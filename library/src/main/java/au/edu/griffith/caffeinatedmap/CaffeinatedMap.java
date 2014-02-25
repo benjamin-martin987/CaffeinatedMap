@@ -11,7 +11,7 @@ import au.edu.griffith.caffeinatedmap.clustering.Clusterable;
 
 public class CaffeinatedMap extends BaseCaffeinatedMap implements IGoogleMap.OnCameraChangeListener {
 
-    private OnCameraChangeListener mCameraChangeListener;
+    private GoogleMap.OnCameraChangeListener mCameraChangeListener;
 
     private ClusterHandler mClusterHandler;
 
@@ -19,17 +19,15 @@ public class CaffeinatedMap extends BaseCaffeinatedMap implements IGoogleMap.OnC
         super(mapReference);
         mClusterHandler = new ClusterHandler(mapReference);
 
-        GoogleMap googleMap = mMapReference.get();
-        if (googleMap != null) {
-            googleMap.setOnCameraChangeListener(this);
-        }
+        super.setOnCameraChangeListener(this);
     }
 
     public void addClusterableMarkers(List<Clusterable> markers) {
         mClusterHandler.addClusterableList(markers);
     }
 
-    public void setOnCameraChangeListener(OnCameraChangeListener listener) {
+    @Override
+    public void setOnCameraChangeListener(GoogleMap.OnCameraChangeListener listener) {
         mCameraChangeListener = listener;
     }
 
@@ -39,10 +37,6 @@ public class CaffeinatedMap extends BaseCaffeinatedMap implements IGoogleMap.OnC
         if (mCameraChangeListener != null) {
             mCameraChangeListener.onCameraChange(cameraPosition);
         }
-    }
-
-    public static interface OnCameraChangeListener {
-        public abstract void onCameraChange(CameraPosition position);
     }
 
 }
