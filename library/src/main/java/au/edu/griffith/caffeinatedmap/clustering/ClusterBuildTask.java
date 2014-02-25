@@ -11,9 +11,8 @@ import au.edu.griffith.caffeinatedmap.clustering.ClusterBuildTask.BuildTaskArgs;
 
 public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
 
-    private static final double PIXEL_DISTANCE = 300;
-
     public static class BuildTaskArgs {
+        public ClusteringSettings settings;
         public Projection projection;
         public List<Clusterable> clusterables;
     }
@@ -31,13 +30,16 @@ public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluste
         if (args != null && args.length > 0) {
             BuildTaskArgs buildTaskArgs = args[0];
             if (buildTaskArgs.clusterables != null && buildTaskArgs.projection != null) {
+                if (buildTaskArgs.settings == null) {
+                    buildTaskArgs.settings = new ClusteringSettings().setClusterOptions(new ClusterOptions());
+                }
                 for (Clusterable clusterable : buildTaskArgs.clusterables) {
                     clusterable.clearScreenPosition();
                     clusterable.setScreenPosition(buildTaskArgs.projection);
                     boolean addedToCluster = false;
 
                     for (Cluster cluster : clusters) {
-                        if (cluster.getPixelDistanceFrom(clusterable) < PIXEL_DISTANCE) {
+                        if (cluster.getPixelDistanceFrom(clusterable) < buildTaskArgs.settings.getClusterSize()) {
                             cluster.add(clusterable);
                             addedToCluster = true;
                             break;
@@ -45,7 +47,7 @@ public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluste
                     }
 
                     if (!addedToCluster) {
-                        clusters.add(new Cluster(clusterable, buildTaskArgs.projection));
+                        clusters.add(new Cluster(buildTaskArgs.settings.getClusterOptions(), clusterable, buildTaskArgs.projection));
                     }
                 }
             }

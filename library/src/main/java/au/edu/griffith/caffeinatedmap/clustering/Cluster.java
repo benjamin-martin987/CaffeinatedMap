@@ -11,13 +11,19 @@ public class Cluster extends MapPosition {
     private static final String ID_PREFIX = "C";
     private static int ID_NUMBER = 1;
 
-    private List<Clusterable> mClusterables;
+    private final ClusterOptions mOptions;
 
-    public Cluster(Clusterable clusterable, Projection projection) {
+    private List<Clusterable> mClusterables;
+    private InClusterTypeCounter mTypeCounter;
+
+    public Cluster(ClusterOptions options, Clusterable clusterable, Projection projection) {
         super(ID_PREFIX + ID_NUMBER++);
+        mOptions = (options != null) ? options : new ClusterOptions();
         mClusterables = new ArrayList<Clusterable>();
 
-        // TODO TypeCount?
+        if (mOptions.isTypeCountingEnabled()) {
+            mTypeCounter = new InClusterTypeCounter();
+        }
 
         if (clusterable != null && projection != null) {
             setPosition(clusterable.getPosition());
@@ -29,7 +35,9 @@ public class Cluster extends MapPosition {
     public void add(Clusterable clusterable) {
         if (clusterable != null) {
             mClusterables.add(clusterable);
-            // TODO Add to TypeCount?
+            if (mTypeCounter != null) {
+                mTypeCounter.incrementType(clusterable.getType());
+            }
         }
     }
 
@@ -44,7 +52,13 @@ public class Cluster extends MapPosition {
         return null;
     }
 
-    // TODO Get TypeCount?
+    public String[] getTypeList() {
+        return (mTypeCounter != null) ? mTypeCounter.getListOfTypes() : null;
+    }
+
+    public int getTypeCount(String type) {
+        return (mTypeCounter != null) ? mTypeCounter.getType(type) : 0;
+    }
 
     public int size() {
         return mClusterables.size();

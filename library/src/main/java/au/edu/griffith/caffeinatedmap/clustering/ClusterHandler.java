@@ -14,21 +14,22 @@ import java.util.List;
 public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
 
     private final WeakReference<GoogleMap> mMapReference;
+    private ClusteringSettings mSettings;
 
     private List<Clusterable> mClusterables;
     private List<Cluster> mCurrentClusters;
     private HashMap<String, Marker> mVisibleClusters;
     private float mZoomLevel;
 
-    public ClusterHandler(WeakReference<GoogleMap> mapReference) {
+    public ClusterHandler(WeakReference<GoogleMap> mapReference, ClusteringSettings settings) {
         mMapReference = mapReference;
+        mSettings = (settings != null) ? settings : new ClusteringSettings().setClusterOptions(new ClusterOptions());
+
         mClusterables = new ArrayList<Clusterable>();
         mVisibleClusters = new HashMap<String, Marker>();
         mZoomLevel = 0f;
 
         // TODO Clusterable Types?
-
-        // TODO Map OnCameraChange - Through interface?
     }
 
     public void addClusterable(Clusterable clusterable) {
@@ -58,6 +59,7 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
             if ((int) mZoomLevel != (int) zoom) {
                 mZoomLevel = zoom;
                 ClusterBuildTask.BuildTaskArgs buildTaskArgs = new ClusterBuildTask.BuildTaskArgs();
+                buildTaskArgs.settings = mSettings;
                 buildTaskArgs.projection = googleMap.getProjection();
                 buildTaskArgs.clusterables = mClusterables;
                 new ClusterBuildTask(this).execute(buildTaskArgs);
