@@ -78,31 +78,34 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
         updateClusters();
     }
 
-    public void updateVisibleClusters() {
+    private void updateVisibleClusters() {
         GoogleMap googleMap = mMapReference.get();
         if (googleMap != null && mCurrentClusters != null) {
             LatLngBounds visibleBounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
 
             for (Cluster cluster : mCurrentClusters) {
                 if (visibleBounds.contains(cluster.getPosition())) {
-                    MarkerOptions options = new MarkerOptions();
-                    options.position(cluster.getPosition());
-
-                    if (cluster.size() > 1) {
-                        // TODO Icons
-                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                        options.title(cluster.getId());
-                    } else if (cluster.size() == 1) {
-                        options.title(cluster.getClusterableAtIndex(0).getId());
-                        // TODO Polygons
-                    }
-
-                    addClusterToMap(cluster.getId(), options);
+                    addClusterToMap(cluster.getId(), buildClusterMarker(cluster));
                 } else {
                     removeClusterFromMap(cluster.getId());
                 }
             }
         }
+    }
+
+    private MarkerOptions buildClusterMarker(Cluster cluster) {
+        MarkerOptions options = new MarkerOptions();
+        options.position(cluster.getPosition());
+
+        if (cluster.size() > 1) {
+            // TODO Icons
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            options.title(cluster.getId());
+        } else if (cluster.size() == 1) {
+            options.title(cluster.getClusterableAtIndex(0).getId());
+            // TODO Polygons
+        }
+        return options;
     }
 
     private void addClusterToMap(String id, MarkerOptions options) {
@@ -134,4 +137,5 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
         removeAllClustersFromMap();
         updateVisibleClusters();
     }
+
 }
