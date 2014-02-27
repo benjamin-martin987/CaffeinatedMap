@@ -11,45 +11,54 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
+import au.edu.griffith.caffeinatedmap.markers.CaffeinatedMarkerOptions;
+
+public class ClusterHandler {
 
     private final WeakReference<GoogleMap> mMapReference;
     private ClusteringSettings mSettings;
 
+    private HashMap<String, CaffeinatedMarkerOptions> mCaffeinatedMarkerOptions;
+    private HashMap<String, Marker> mVisibleClusters;
     private List<Clusterable> mClusterables;
     private List<Cluster> mCurrentClusters;
-    private HashMap<String, Marker> mVisibleClusters;
     private float mZoomLevel;
 
     public ClusterHandler(WeakReference<GoogleMap> mapReference) {
         mMapReference = mapReference;
         mSettings = new ClusteringSettings().setClusterOptions(new ClusterOptions());
 
+        mCaffeinatedMarkerOptions = new HashMap<String, CaffeinatedMarkerOptions>();
         mClusterables = new ArrayList<Clusterable>();
         mVisibleClusters = new HashMap<String, Marker>();
         mZoomLevel = 0f;
-
-        // TODO Clusterable Types?
     }
 
     public ClusteringSettings getSettings() {
         return mSettings;
     }
 
-    public void addClusterable(Clusterable clusterable) {
-        if (clusterable != null) {
+    public void addMarker(CaffeinatedMarkerOptions options) {
+        if (options != null) {
+            mCaffeinatedMarkerOptions.put(options.getKey(), options);
+            Clusterable clusterable = new Clusterable(options.getKey(), options.getType());
+            clusterable.setPosition(options.getPosition());
             mClusterables.add(clusterable);
         }
     }
 
-    public void addClusterableList(List<Clusterable> clusterables) {
-        if (clusterables != null) {
-            mClusterables.addAll(clusterables);
+    public void addMarkers(List<CaffeinatedMarkerOptions> list) {
+        if (list != null) {
+            for (CaffeinatedMarkerOptions options : list) {
+                addMarker(options);
+            }
         }
     }
 
-    public void clearClusterables() {
+    public void clearMarkers() {
+        removeAllClustersFromMap();
         mClusterables = new ArrayList<Clusterable>();
+        mCaffeinatedMarkerOptions = new HashMap<String, CaffeinatedMarkerOptions>();
     }
 
     public List<Cluster> getClusters() {
@@ -66,7 +75,12 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
                 buildTaskArgs.settings = mSettings;
                 buildTaskArgs.projection = googleMap.getProjection();
                 buildTaskArgs.clusterables = mClusterables;
-                new ClusterBuildTask(this).execute(buildTaskArgs);
+                new ClusterBuildTask(new ClusterBuildTask.BuildTaskCallback() {
+                    @Override
+                    public void onBuildTaskReturn(List<Cluster> clusters) {
+                        onClusterBuildTaskReturn(clusters);
+                    }
+                }).execute(buildTaskArgs);
             } else {
                 updateVisibleClusters();
             }
@@ -85,42 +99,49 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
 
             for (Cluster cluster : mCurrentClusters) {
                 if (visibleBounds.contains(cluster.getPosition())) {
-                    addClusterToMap(cluster.getId(), buildClusterMarker(cluster));
+                    if (cluster.size() > 1) {
+                        addClusterToMap(cluster.getKey(), getClusterMakerOptions(cluster));
+                    } else if (cluster.size() == 1) {
+                        addClusterToMap(cluster.getKey(), getCMO(cluster.getClusterableAtIndex(0).getCMOKey()));
+                    }
                 } else {
-                    removeClusterFromMap(cluster.getId());
+                    removeClusterFromMap(cluster.getKey());
                 }
             }
         }
     }
 
-    private MarkerOptions buildClusterMarker(Cluster cluster) {
-        MarkerOptions options = new MarkerOptions();
-        options.position(cluster.getPosition());
-
-        if (cluster.size() > 1) {
-            // TODO Icons
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            options.title(cluster.getId());
-        } else if (cluster.size() == 1) {
-            options.title(cluster.getClusterableAtIndex(0).getId());
-            // TODO Polygons
+    private MarkerOptions getCMO(String key) {
+        // TODO Polygons
+        if (mCaffeinatedMarkerOptions.containsKey(key)) {
+            return mCaffeinatedMarkerOptions.get(key).getMarkerOptions();
         }
+        return null;
+    }
+
+    private MarkerOptions getClusterMakerOptions(Cluster cluster) {
+        MarkerOptions options = new MarkerOptions();
+        // TODO Check For Custom Options
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        options.title(cluster.getKey());
+
+        options.position(cluster.getPosition());
         return options;
     }
 
-    private void addClusterToMap(String id, MarkerOptions options) {
-        if (!mVisibleClusters.containsKey(id)) {
+    private void addClusterToMap(String key, MarkerOptions options) {
+        if (!mVisibleClusters.containsKey(key)) {
             GoogleMap googleMap = mMapReference.get();
-            if (googleMap != null) {
-                mVisibleClusters.put(id, googleMap.addMarker(options));
+            if (googleMap != null && options != null) {
+                mVisibleClusters.put(key, googleMap.addMarker(options));
             }
         }
     }
 
-    private void removeClusterFromMap(String id) {
-        if (mVisibleClusters.containsKey(id)) {
-            mVisibleClusters.get(id).remove();
-            mVisibleClusters.remove(id);
+    private void removeClusterFromMap(String key) {
+        if (mVisibleClusters.containsKey(key)) {
+            mVisibleClusters.get(key).remove();
+            mVisibleClusters.remove(key);
         }
     }
 
@@ -131,8 +152,7 @@ public class ClusterHandler implements ClusterBuildTask.BuildTaskCallback {
         mVisibleClusters = new HashMap<String, Marker>();
     }
 
-    @Override
-    public void onBuildTaskReturn(List<Cluster> clusters) {
+    private void onClusterBuildTaskReturn(List<Cluster> clusters) {
         mCurrentClusters = clusters;
         removeAllClustersFromMap();
         updateVisibleClusters();

@@ -1,26 +1,21 @@
 package au.edu.griffith.caffeinatedmap.clustering;
 
-public abstract class Clusterable extends MapPosition {
+public class Clusterable extends MapPosition {
 
-    private static final String ID_PREFIX = "M";
-    private static int ID_NUMBER = 1;
+    private final String mCMOKey;
+    private final String mCMOType;
 
-    private String mType;
-
-    protected Clusterable() {
-        this("");
+    protected Clusterable(String cmoKey, String cmoType) {
+        mCMOKey = cmoKey;
+        mCMOType = cmoType;
     }
 
-    protected Clusterable(String type) {
-        super(ID_PREFIX + ID_NUMBER++);
-        mType = type;
+    public String getCMOKey() {
+        return mCMOKey;
     }
 
-    public String getType() {
-        return mType;
+    public String getCMOType() {
+        return mCMOType;
     }
 
-    public void setType(String type) {
-        mType = type;
-    }
 }

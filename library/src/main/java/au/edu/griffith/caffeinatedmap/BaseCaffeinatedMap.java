@@ -23,11 +23,11 @@ import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import java.lang.ref.WeakReference;
 
-public abstract class BaseCaffeinatedMap implements IGoogleMap {
+abstract class BaseCaffeinatedMap implements IGoogleMap {
 
     protected final WeakReference<GoogleMap> mMapReference;
 
-    public BaseCaffeinatedMap(WeakReference<GoogleMap> mapReference) {
+    protected BaseCaffeinatedMap(WeakReference<GoogleMap> mapReference) {
         mMapReference = mapReference;
     }
 

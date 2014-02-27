@@ -13,7 +13,7 @@ public class InClusterTypeCounter {
         mTypeCounter.put(UNKNOWN_TYPE, 0);
     }
 
-    public void incrementType(String type) {
+    void incrementType(String type) {
         type = (type != null && type.equals("")) ? type : UNKNOWN_TYPE;
         mTypeCounter.put(type, (mTypeCounter.containsKey(type)) ? mTypeCounter.get(type) + 1 : 1);
     }

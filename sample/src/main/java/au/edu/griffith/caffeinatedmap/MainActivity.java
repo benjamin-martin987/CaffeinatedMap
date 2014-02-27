@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
         setUpMapIfNeeded();
 
         RandomMarkers randomMarkers = new RandomMarkers(1000);
-        mCaffeinatedMap.addClusterableMarkers(randomMarkers.getClusterables());
+        mCaffeinatedMap.addClusterableMarkers(randomMarkers.getCMOList());
     }
 
     private void setUpMapFragment() {
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
                         Toast.makeText(getApplication(), "OnCameraChangeOverride", Toast.LENGTH_SHORT).show();
                     }
                 });
-                mCaffeinatedMap.getClusteringSettings().setClusterSize(600);
+                mCaffeinatedMap.getClusteringSettings().setClusterSize(400);
             }
         }
     }

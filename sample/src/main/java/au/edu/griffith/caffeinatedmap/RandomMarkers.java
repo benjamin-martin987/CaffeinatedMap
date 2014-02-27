@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import au.edu.griffith.caffeinatedmap.clustering.Clusterable;
+import au.edu.griffith.caffeinatedmap.markers.CaffeinatedMarkerOptions;
 
 public class RandomMarkers {
 
     private List<MarkerOptions> mMarkers;
-    private List<Clusterable> mClusterables;
+    private List<CaffeinatedMarkerOptions> mCMOList;
     private Random random;
 
     public RandomMarkers(int numOfMarkers) {
         mMarkers = new ArrayList<MarkerOptions>();
-        mClusterables = new ArrayList<Clusterable>();
+        mCMOList = new ArrayList<CaffeinatedMarkerOptions>();
         random = new Random();
 
         for (int i = 0; i < numOfMarkers; i++) {
@@ -25,9 +25,10 @@ public class RandomMarkers {
 
             mMarkers.add(new MarkerOptions().position(latLng).title("" + i));
 
-            Marker marker = new Marker();
-            marker.setPosition(latLng);
-            mClusterables.add(marker);
+            CaffeinatedMarkerOptions marker = new CaffeinatedMarkerOptions();
+            marker.position(latLng);
+            marker.title("" + i);
+            mCMOList.add(marker);
         }
     }
 
@@ -35,16 +36,12 @@ public class RandomMarkers {
         return mMarkers;
     }
 
-    public List<Clusterable> getClusterables() {
-        return mClusterables;
+    public List<CaffeinatedMarkerOptions> getCMOList() {
+        return mCMOList;
     }
 
     private double getRandomInRange(double from, double to) {
         return (random.nextDouble() * (to - from) + from);
-    }
-
-    private class Marker extends Clusterable {
-
     }
 
 }

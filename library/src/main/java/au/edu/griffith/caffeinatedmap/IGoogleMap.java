@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 
-public interface IGoogleMap {
+interface IGoogleMap {
 
     int MAP_TYPE_HYBRID = GoogleMap.MAP_TYPE_HYBRID;
     int MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE;

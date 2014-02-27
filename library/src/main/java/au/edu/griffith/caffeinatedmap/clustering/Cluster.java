@@ -8,16 +8,17 @@ import java.util.List;
 
 public class Cluster extends MapPosition {
 
-    private static final String ID_PREFIX = "C";
-    private static int ID_NUMBER = 1;
+    private static final String KEY_PREFIX = "C";
+    private static int KEY_NUMBER = 1;
 
     private final ClusterOptions mOptions;
+    private final String mKey;
 
     private List<Clusterable> mClusterables;
     private InClusterTypeCounter mTypeCounter;
 
     public Cluster(ClusterOptions options, Clusterable clusterable, Projection projection) {
-        super(ID_PREFIX + ID_NUMBER++);
+        mKey = KEY_PREFIX + KEY_NUMBER++;
         mOptions = (options != null) ? options : new ClusterOptions();
         mClusterables = new ArrayList<Clusterable>();
 
@@ -32,11 +33,15 @@ public class Cluster extends MapPosition {
         }
     }
 
-    public void add(Clusterable clusterable) {
+    public String getKey() {
+        return mKey;
+    }
+
+    void add(Clusterable clusterable) {
         if (clusterable != null) {
             mClusterables.add(clusterable);
             if (mTypeCounter != null) {
-                mTypeCounter.incrementType(clusterable.getType());
+                mTypeCounter.incrementType(clusterable.getCMOType());
             }
         }
     }
@@ -65,14 +70,14 @@ public class Cluster extends MapPosition {
     }
 
     @Override
-    public void clearScreenPosition() {
+    void clearScreenPosition() {
         super.clearScreenPosition();
         for (Clusterable clusterable : mClusterables) {
             clusterable.clearScreenPosition();
         }
     }
 
-    public void updateClusterPosition() {
+    void updateClusterPosition() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Clusterable clusterable : mClusterables) {
             builder.include(clusterable.getPosition());

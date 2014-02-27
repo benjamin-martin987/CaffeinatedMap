@@ -10,7 +10,7 @@ public class ClusterOptions {
         return mTypeCounting;
     }
 
-    public ClusterOptions setTypeCounting(boolean enabled) {
+    public ClusterOptions setTypeCountingEnabled(boolean enabled) {
         mTypeCounting = enabled;
         return this;
     }

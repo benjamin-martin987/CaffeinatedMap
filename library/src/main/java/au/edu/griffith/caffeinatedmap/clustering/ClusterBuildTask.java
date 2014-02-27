@@ -9,17 +9,17 @@ import java.util.List;
 
 import au.edu.griffith.caffeinatedmap.clustering.ClusterBuildTask.BuildTaskArgs;
 
-public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
+class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
 
-    public static class BuildTaskArgs {
-        public ClusteringSettings settings;
-        public Projection projection;
-        public List<Clusterable> clusterables;
+    static class BuildTaskArgs {
+        ClusteringSettings settings;
+        Projection projection;
+        List<Clusterable> clusterables;
     }
 
     private BuildTaskCallback mCallback;
 
-    public ClusterBuildTask(BuildTaskCallback callback) {
+    ClusterBuildTask(BuildTaskCallback callback) {
         mCallback = callback;
     }
 
@@ -65,7 +65,7 @@ public class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluste
         mCallback.onBuildTaskReturn(clusters);
     }
 
-    public static interface BuildTaskCallback {
+    interface BuildTaskCallback {
         void onBuildTaskReturn(List<Cluster> clusters);
     }
 }
