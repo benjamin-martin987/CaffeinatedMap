@@ -13,12 +13,14 @@ public class RandomMarkers {
 
     private List<MarkerOptions> mMarkers;
     private List<CaffeinatedMarkerOptions> mCMOList;
-    private Random random;
+    private Random mRandom;
+    private String[] mTypes;
 
     public RandomMarkers(int numOfMarkers) {
         mMarkers = new ArrayList<MarkerOptions>();
         mCMOList = new ArrayList<CaffeinatedMarkerOptions>();
-        random = new Random();
+        mRandom = new Random();
+        mTypes = new String[]{"Fred", "Jim", "Sally", "Haley"};
 
         for (int i = 0; i < numOfMarkers; i++) {
             LatLng latLng = new LatLng(getRandomInRange(-85, 85), getRandomInRange(-180, 180));
@@ -28,6 +30,7 @@ public class RandomMarkers {
             CaffeinatedMarkerOptions marker = new CaffeinatedMarkerOptions();
             marker.position(latLng);
             marker.title("" + i);
+            marker.type(mTypes[mRandom.nextInt(4)]);
             mCMOList.add(marker);
         }
     }
@@ -41,7 +44,7 @@ public class RandomMarkers {
     }
 
     private double getRandomInRange(double from, double to) {
-        return (random.nextDouble() * (to - from) + from);
+        return (mRandom.nextDouble() * (to - from) + from);
     }
 
 }

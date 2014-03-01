@@ -27,7 +27,7 @@ public class CaffeinatedMarkerOptions extends BaseMarkerOptions {
         return mType;
     }
 
-    public void setType(String type) {
+    public void type(String type) {
         mType = type;
     }
 

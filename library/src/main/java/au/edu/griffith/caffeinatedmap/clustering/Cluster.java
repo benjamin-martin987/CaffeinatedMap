@@ -11,15 +11,15 @@ public class Cluster extends MapPosition {
     private static final String KEY_PREFIX = "C";
     private static int KEY_NUMBER = 1;
 
-    private final ClusterOptions mOptions;
+    private final ClusteringSettings mOptions;
     private final String mKey;
 
     private List<Clusterable> mClusterables;
     private InClusterTypeCounter mTypeCounter;
 
-    public Cluster(ClusterOptions options, Clusterable clusterable, Projection projection) {
+    public Cluster(ClusteringSettings options, Clusterable clusterable, Projection projection) {
         mKey = KEY_PREFIX + KEY_NUMBER++;
-        mOptions = (options != null) ? options : new ClusterOptions();
+        mOptions = (options != null) ? options : new ClusteringSettings();
         mClusterables = new ArrayList<Clusterable>();
 
         if (mOptions.isTypeCountingEnabled()) {

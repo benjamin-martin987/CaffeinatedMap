@@ -31,7 +31,7 @@ class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
             BuildTaskArgs buildTaskArgs = args[0];
             if (buildTaskArgs.clusterables != null && buildTaskArgs.projection != null) {
                 if (buildTaskArgs.settings == null) {
-                    buildTaskArgs.settings = new ClusteringSettings().setClusterOptions(new ClusterOptions());
+                    buildTaskArgs.settings = new ClusteringSettings();
                 }
                 for (Clusterable clusterable : buildTaskArgs.clusterables) {
                     clusterable.clearScreenPosition();
@@ -47,7 +47,7 @@ class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
                     }
 
                     if (!addedToCluster) {
-                        clusters.add(new Cluster(buildTaskArgs.settings.getClusterOptions(), clusterable, buildTaskArgs.projection));
+                        clusters.add(new Cluster(buildTaskArgs.settings, clusterable, buildTaskArgs.projection));
                     }
                 }
             }

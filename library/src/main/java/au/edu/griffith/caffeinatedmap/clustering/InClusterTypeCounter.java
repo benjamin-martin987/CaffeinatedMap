@@ -10,11 +10,10 @@ public class InClusterTypeCounter {
 
     public InClusterTypeCounter() {
         mTypeCounter = new HashMap<String, Integer>();
-        mTypeCounter.put(UNKNOWN_TYPE, 0);
     }
 
     void incrementType(String type) {
-        type = (type != null && type.equals("")) ? type : UNKNOWN_TYPE;
+        type = (type != null && !type.equals("")) ? type : UNKNOWN_TYPE;
         mTypeCounter.put(type, (mTypeCounter.containsKey(type)) ? mTypeCounter.get(type) + 1 : 1);
     }
 

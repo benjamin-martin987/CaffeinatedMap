@@ -3,10 +3,15 @@ package au.edu.griffith.caffeinatedmap;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import java.util.HashMap;
+
+import au.edu.griffith.caffeinatedmap.clustering.Cluster;
+import au.edu.griffith.caffeinatedmap.clustering.ClusterIconSelector;
+import au.edu.griffith.caffeinatedmap.markers.CaffeinatedClusterIcon;
 
 public class MainActivity extends Activity {
 
@@ -45,13 +50,31 @@ public class MainActivity extends Activity {
             mCaffeinatedMap = mMapFragment.getCaffeinatedMap();
             if (mCaffeinatedMap != null) {
                 mCaffeinatedMap.setMyLocationEnabled(true);
-                mCaffeinatedMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                mCaffeinatedMap.getClusteringSettings().setTypeCountingEnabled(true);
+
+                final HashMap<String, Integer> colours = new HashMap<String, Integer>();
+                colours.put("Fred", getResources().getColor(R.color.red));
+                colours.put("Jim", getResources().getColor(R.color.green));
+                colours.put("Sally", getResources().getColor(R.color.blue));
+                colours.put("Haley", getResources().getColor(R.color.pink));
+                colours.put("Unknown", getResources().getColor(R.color.black));
+
+                mCaffeinatedMap.getClusteringSettings().setCIS(new ClusterIconSelector() {
                     @Override
-                    public void onCameraChange(CameraPosition cameraPosition) {
-                        Toast.makeText(getApplication(), "OnCameraChangeOverride", Toast.LENGTH_SHORT).show();
+                    public BitmapDescriptor selectIconFor(Cluster cluster) {
+                        String[] type = cluster.getTypeList();
+                        int[] d = new int[type.length];
+                        int[] c = new int[d.length];
+                        int i = 0;
+                        for (String s : type) {
+                            d[i] = cluster.getTypeCount(s);
+                            c[i] = colours.get(s);
+                            i++;
+                        }
+                        CaffeinatedClusterIcon caffeinatedClusterIcon = new CaffeinatedClusterIcon(getApplicationContext(), null, d, c);
+                        return BitmapDescriptorFactory.fromBitmap(caffeinatedClusterIcon.toBitmap());
                     }
                 });
-                mCaffeinatedMap.getClusteringSettings().setClusterSize(400);
             }
         }
     }

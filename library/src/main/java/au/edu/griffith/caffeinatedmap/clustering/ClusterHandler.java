@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import au.edu.griffith.caffeinatedmap.R;
 import au.edu.griffith.caffeinatedmap.markers.CaffeinatedMarkerOptions;
 
 public class ClusterHandler {
@@ -26,7 +27,7 @@ public class ClusterHandler {
 
     public ClusterHandler(WeakReference<GoogleMap> mapReference) {
         mMapReference = mapReference;
-        mSettings = new ClusteringSettings().setClusterOptions(new ClusterOptions());
+        mSettings = new ClusteringSettings();
 
         mCaffeinatedMarkerOptions = new HashMap<String, CaffeinatedMarkerOptions>();
         mClusterables = new ArrayList<Clusterable>();
@@ -121,11 +122,11 @@ public class ClusterHandler {
 
     private MarkerOptions getClusterMakerOptions(Cluster cluster) {
         MarkerOptions options = new MarkerOptions();
-        // TODO Check For Custom Options
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-        options.title(cluster.getKey());
-
+        ClusterIconSelector selector;
+        options.icon(((selector = mSettings.getCIS()) != null) ? selector.selectIconFor(cluster) : BitmapDescriptorFactory.fromResource(R.drawable.ic_default_cluster));
+        options.anchor(0.5f, 0.5f);
         options.position(cluster.getPosition());
+        options.title(cluster.getKey());
         return options;
     }
 
