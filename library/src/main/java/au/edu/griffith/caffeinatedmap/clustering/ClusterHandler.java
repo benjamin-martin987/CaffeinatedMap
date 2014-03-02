@@ -21,6 +21,7 @@ public class ClusterHandler {
 
     private HashMap<String, CaffeinatedMarkerOptions> mCaffeinatedMarkerOptions;
     private HashMap<String, Marker> mVisibleClusters;
+    private HashMap<String, Marker> mVisibleMarkers;
     private List<Clusterable> mClusterables;
     private List<Cluster> mCurrentClusters;
     private float mZoomLevel;
@@ -32,6 +33,7 @@ public class ClusterHandler {
         mCaffeinatedMarkerOptions = new HashMap<String, CaffeinatedMarkerOptions>();
         mClusterables = new ArrayList<Clusterable>();
         mVisibleClusters = new HashMap<String, Marker>();
+        mVisibleMarkers = new HashMap<String, Marker>();
         mZoomLevel = 0f;
     }
 
@@ -57,7 +59,7 @@ public class ClusterHandler {
     }
 
     public void clearMarkers() {
-        removeAllClustersFromMap();
+        removeAllFromMap();
         mClusterables = new ArrayList<Clusterable>();
         mCaffeinatedMarkerOptions = new HashMap<String, CaffeinatedMarkerOptions>();
     }
@@ -103,17 +105,21 @@ public class ClusterHandler {
                     if (cluster.size() > 1) {
                         addClusterToMap(cluster.getKey(), getClusterMakerOptions(cluster));
                     } else if (cluster.size() == 1) {
-                        addClusterToMap(cluster.getKey(), getCMO(cluster.getClusterableAtIndex(0).getCMOKey()));
+                        String cmoKey = cluster.getClusterableAtIndex(0).getCMOKey();
+                        addMarkerToMap(cmoKey, getCMO(cmoKey));
                     }
                 } else {
-                    removeClusterFromMap(cluster.getKey());
+                    if (cluster.size() > 1) {
+                        removeClusterFromMap(cluster.getKey());
+                    } else if (cluster.size() == 1) {
+                        removeMarkerFromMap(cluster.getClusterableAtIndex(0).getCMOKey());
+                    }
                 }
             }
         }
     }
 
     private MarkerOptions getCMO(String key) {
-        // TODO Polygons
         if (mCaffeinatedMarkerOptions.containsKey(key)) {
             return mCaffeinatedMarkerOptions.get(key).getMarkerOptions();
         }
@@ -122,8 +128,7 @@ public class ClusterHandler {
 
     private MarkerOptions getClusterMakerOptions(Cluster cluster) {
         MarkerOptions options = new MarkerOptions();
-        ClusterIconSelector selector;
-        options.icon(((selector = mSettings.getCIS()) != null) ? selector.selectIconFor(cluster) : BitmapDescriptorFactory.fromResource(R.drawable.ic_default_cluster));
+        options.icon((mSettings.clusterIconSelect != null) ? mSettings.clusterIconSelect.selectIconFor(cluster) : BitmapDescriptorFactory.fromResource(R.drawable.ic_default_cluster));
         options.anchor(0.5f, 0.5f);
         options.position(cluster.getPosition());
         options.title(cluster.getKey());
@@ -131,11 +136,17 @@ public class ClusterHandler {
     }
 
     private void addClusterToMap(String key, MarkerOptions options) {
-        if (!mVisibleClusters.containsKey(key)) {
-            GoogleMap googleMap = mMapReference.get();
-            if (googleMap != null && options != null) {
-                mVisibleClusters.put(key, googleMap.addMarker(options));
-            }
+        GoogleMap googleMap = mMapReference.get();
+        if (googleMap != null && options != null && !mVisibleClusters.containsKey(key)) {
+            mVisibleClusters.put(key, googleMap.addMarker(options));
+        }
+    }
+
+    private void addMarkerToMap(String key, MarkerOptions options) {
+        GoogleMap googleMap = mMapReference.get();
+        if (googleMap != null && options != null && !mVisibleMarkers.containsKey(key)) {
+            mVisibleMarkers.put(key, googleMap.addMarker(options));
+            cmoVisibilityCall(key, true);
         }
     }
 
@@ -146,16 +157,40 @@ public class ClusterHandler {
         }
     }
 
-    private void removeAllClustersFromMap() {
+    private void removeMarkerFromMap(String key) {
+        if (mVisibleMarkers.containsKey(key)) {
+            mVisibleMarkers.get(key).remove();
+            mVisibleMarkers.remove(key);
+            cmoVisibilityCall(key, false);
+        }
+    }
+
+    private void removeAllFromMap() {
         for (Marker marker : mVisibleClusters.values()) {
             marker.remove();
         }
         mVisibleClusters = new HashMap<String, Marker>();
+
+        for (String key : mVisibleMarkers.keySet()) {
+            mVisibleMarkers.get(key).remove();
+            cmoVisibilityCall(key, false);
+        }
+        mVisibleMarkers = new HashMap<String, Marker>();
+    }
+
+    private void cmoVisibilityCall(String cmoKey, boolean visible) {
+        if (mSettings.cmoVisibilityChange != null) {
+            if (visible) {
+                mSettings.cmoVisibilityChange.onCMOVisible(cmoKey);
+            } else {
+                mSettings.cmoVisibilityChange.onCMOHidden(cmoKey);
+            }
+        }
     }
 
     private void onClusterBuildTaskReturn(List<Cluster> clusters) {
         mCurrentClusters = clusters;
-        removeAllClustersFromMap();
+        removeAllFromMap();
         updateVisibleClusters();
     }
 

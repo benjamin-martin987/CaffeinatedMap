@@ -1,21 +1,26 @@
 package au.edu.griffith.caffeinatedmap.clustering;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+
 public class ClusteringSettings {
 
     private static final double DEFAULT_CLUSTER_SIZE = 300;
     private static final boolean DEFAULT_COUNT_CLUSTERABLE_TYPES = false;
 
-    private ClusterIconSelector mCIS = null;
+    OnClusterIconSelect clusterIconSelect = null;
+    OnCMOVisibilityChange cmoVisibilityChange = null;
 
     private double mClusterSize = DEFAULT_CLUSTER_SIZE;
     private boolean mTypeCounting = DEFAULT_COUNT_CLUSTERABLE_TYPES;
 
-    public ClusterIconSelector getCIS() {
-        return mCIS;
+    public ClusteringSettings setOnClusterIconSelect(OnClusterIconSelect oCIS) {
+        clusterIconSelect = oCIS;
+        return this;
     }
 
-    public void setCIS(ClusterIconSelector cis) {
-        mCIS = cis;
+    public ClusteringSettings setOnCMOVisibilityChange(OnCMOVisibilityChange oCVC) {
+        cmoVisibilityChange = oCVC;
+        return this;
     }
 
     public double getClusterSize() {
@@ -34,6 +39,16 @@ public class ClusteringSettings {
     public ClusteringSettings setTypeCountingEnabled(boolean enabled) {
         mTypeCounting = enabled;
         return this;
+    }
+
+    public interface OnClusterIconSelect {
+        BitmapDescriptor selectIconFor(Cluster cluster);
+    }
+
+    public interface OnCMOVisibilityChange {
+        void onCMOVisible(String key);
+
+        void onCMOHidden(String key);
     }
 
 }

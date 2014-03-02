@@ -3,6 +3,7 @@ package au.edu.griffith.caffeinatedmap;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -10,7 +11,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.util.HashMap;
 
 import au.edu.griffith.caffeinatedmap.clustering.Cluster;
-import au.edu.griffith.caffeinatedmap.clustering.ClusterIconSelector;
+import au.edu.griffith.caffeinatedmap.clustering.ClusteringSettings;
 import au.edu.griffith.caffeinatedmap.markers.CaffeinatedClusterIcon;
 
 public class MainActivity extends Activity {
@@ -58,8 +59,7 @@ public class MainActivity extends Activity {
                 colours.put("Sally", getResources().getColor(R.color.blue));
                 colours.put("Haley", getResources().getColor(R.color.pink));
                 colours.put("Unknown", getResources().getColor(R.color.black));
-
-                mCaffeinatedMap.getClusteringSettings().setCIS(new ClusterIconSelector() {
+                mCaffeinatedMap.getClusteringSettings().setOnClusterIconSelect(new ClusteringSettings.OnClusterIconSelect() {
                     @Override
                     public BitmapDescriptor selectIconFor(Cluster cluster) {
                         String[] type = cluster.getTypeList();
@@ -73,6 +73,18 @@ public class MainActivity extends Activity {
                         }
                         CaffeinatedClusterIcon caffeinatedClusterIcon = new CaffeinatedClusterIcon(getApplicationContext(), null, d, c);
                         return BitmapDescriptorFactory.fromBitmap(caffeinatedClusterIcon.toBitmap());
+                    }
+                });
+
+                mCaffeinatedMap.getClusteringSettings().setOnCMOVisibilityChange(new ClusteringSettings.OnCMOVisibilityChange() {
+                    @Override
+                    public void onCMOVisible(String key) {
+                        Log.e("au.edu.griffith.caffeinatedmap", "Visible: " + key);
+                    }
+
+                    @Override
+                    public void onCMOHidden(String key) {
+                        Log.e("au.edu.griffith.caffeinatedmap", "Hidden: " + key);
                     }
                 });
             }
