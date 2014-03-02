@@ -1,6 +1,179 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="au.edu.griffith.caffeinatedmap.MainActivity" />
+    android:layout_margin="16dp" >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="No. CMO:" />
+
+        <TextView
+            android:id="@+id/tvNoCMO"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="1000" />
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/sbNoCMO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:max="10000" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="Cluster Size:" />
+
+        <TextView
+            android:id="@+id/tvClusterSize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="300" />
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/sbClusterSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:max="1000" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="8dp">
+            <ImageView
+                android:id="@+id/ivClusterIcon"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="right|center_vertical"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="Cluster Icon:" />
+            </LinearLayout>
+
+        <Button
+            android:id="@+id/bClusterIcon"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:text="Browse"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="Caffeinated Cluster Icon:" />
+
+        <CheckBox
+            android:id="@+id/cbCCI"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="Cluster Type Counting:" />
+
+        <CheckBox
+            android:id="@+id/cbTypeCounting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:enabled="false"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="CMO Visibility Change:" />
+
+        <CheckBox
+            android:id="@+id/cbCMOVisChange"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bStart"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Caffeinate Me!"/>
+
+</LinearLayout>
