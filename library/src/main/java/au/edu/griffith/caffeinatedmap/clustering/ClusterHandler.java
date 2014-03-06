@@ -73,6 +73,9 @@ public class ClusterHandler {
         if (googleMap != null) {
             float zoom = googleMap.getCameraPosition().zoom;
             if ((int) mZoomLevel != (int) zoom) {
+                if (mSettings.clusteringListener != null) {
+                    mSettings.clusteringListener.onClusteringStart();
+                }
                 mZoomLevel = zoom;
                 ClusterBuildTask.BuildTaskArgs buildTaskArgs = new ClusterBuildTask.BuildTaskArgs();
                 buildTaskArgs.settings = mSettings;
@@ -191,6 +194,9 @@ public class ClusterHandler {
     private void onClusterBuildTaskReturn(List<Cluster> clusters) {
         mCurrentClusters = clusters;
         removeAllFromMap();
+        if (mSettings.clusteringListener != null) {
+            mSettings.clusteringListener.onClusteringFinish();
+        }
         updateVisibleClusters();
     }
 

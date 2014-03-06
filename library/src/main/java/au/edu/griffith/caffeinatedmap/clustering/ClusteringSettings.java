@@ -9,6 +9,7 @@ public class ClusteringSettings {
 
     OnClusterIconSelect clusterIconSelect = null;
     OnCMOVisibilityChange cmoVisibilityChange = null;
+    OnClusteringListener clusteringListener = null;
 
     private double mClusterSize = DEFAULT_CLUSTER_SIZE;
     private boolean mTypeCounting = DEFAULT_COUNT_CLUSTERABLE_TYPES;
@@ -20,6 +21,11 @@ public class ClusteringSettings {
 
     public ClusteringSettings setOnCMOVisibilityChange(OnCMOVisibilityChange oCVC) {
         cmoVisibilityChange = oCVC;
+        return this;
+    }
+
+    public ClusteringSettings setOnClusteringListener(OnClusteringListener oCL) {
+        clusteringListener = oCL;
         return this;
     }
 
@@ -49,6 +55,12 @@ public class ClusteringSettings {
         void onCMOVisible(String key);
 
         void onCMOHidden(String key);
+    }
+
+    public interface OnClusteringListener {
+        void onClusteringStart();
+
+        void onClusteringFinish();
     }
 
 }

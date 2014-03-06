@@ -3,6 +3,8 @@ package au.edu.griffith.caffeinatedmap;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -20,6 +22,7 @@ public class MapActivity extends Activity {
 
     private CaffeinatedMapFragment mMapFragment;
     private CaffeinatedMap mCaffeinatedMap;
+    private ProgressBar progressBar;
 
     private int mNumberOfCMO;
     private int mClusterSize;
@@ -31,6 +34,9 @@ public class MapActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress);
+
         getArguments();
         setUpMapFragment();
     }
@@ -112,6 +118,18 @@ public class MapActivity extends Activity {
                 }
             });
         }
+
+        mCaffeinatedMap.getClusteringSettings().setOnClusteringListener(new ClusteringSettings.OnClusteringListener() {
+            @Override
+            public void onClusteringStart() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onClusteringFinish() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
 
         mCaffeinatedMap.addClusterableMarkers(randomMarkers.getCMOList());
     }
