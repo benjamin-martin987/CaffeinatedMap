@@ -38,6 +38,12 @@ public class CaffeinatedMap extends BaseCaffeinatedMap {
         }
     }
 
+    public void clearClusterableMarkers() {
+        if (mClusterHandler != null) {
+            mClusterHandler.clearMarkers();
+        }
+    }
+
     public ClusteringSettings getClusteringSettings() {
         return (mClusterHandler != null) ? mClusterHandler.getSettings() : null;
     }
