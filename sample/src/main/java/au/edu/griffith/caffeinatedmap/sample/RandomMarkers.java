@@ -1,4 +1,4 @@
-package au.edu.griffith.caffeinatedmap;
+package au.edu.griffith.caffeinatedmap.sample;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;

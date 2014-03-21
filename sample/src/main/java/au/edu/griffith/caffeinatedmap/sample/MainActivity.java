@@ -1,4 +1,4 @@
-package au.edu.griffith.caffeinatedmap;
+package au.edu.griffith.caffeinatedmap.sample;
 
 import android.app.Activity;
 import android.content.Intent;

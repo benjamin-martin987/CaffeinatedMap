@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="au.edu.griffith.caffeinatedmap" >
+    package="au.edu.griffith.caffeinatedmap.sample" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -28,7 +28,7 @@
             android:value="AIzaSyBn18cb4ipwn1lcPG0g0oL3Cnol5slTZ28"/>
 
         <activity
-            android:name="au.edu.griffith.caffeinatedmap.MainActivity"
+            android:name="au.edu.griffith.caffeinatedmap.sample.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

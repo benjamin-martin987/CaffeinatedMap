@@ -1,4 +1,4 @@
-package au.edu.griffith.caffeinatedmap;
+package au.edu.griffith.caffeinatedmap.sample;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import java.util.HashMap;
 
+import au.edu.griffith.caffeinatedmap.CaffeinatedMap;
+import au.edu.griffith.caffeinatedmap.CaffeinatedMapFragment;
 import au.edu.griffith.caffeinatedmap.clustering.Cluster;
 import au.edu.griffith.caffeinatedmap.clustering.ClusteringSettings;
 import au.edu.griffith.caffeinatedmap.markers.CaffeinatedClusterIcon;
