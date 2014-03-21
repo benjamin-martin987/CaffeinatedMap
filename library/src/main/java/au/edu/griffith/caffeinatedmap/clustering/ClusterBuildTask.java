@@ -15,6 +15,7 @@ class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
         ClusteringSettings settings;
         Projection projection;
         List<Clusterable> clusterables;
+        int zoom;
     }
 
     private BuildTaskCallback mCallback;
@@ -38,11 +39,13 @@ class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
                     clusterable.setScreenPosition(buildTaskArgs.projection);
                     boolean addedToCluster = false;
 
-                    for (Cluster cluster : clusters) {
-                        if (cluster.getPixelDistanceFrom(clusterable) < buildTaskArgs.settings.getClusterSize()) {
-                            cluster.add(clusterable);
-                            addedToCluster = true;
-                            break;
+                    if (buildTaskArgs.zoom < buildTaskArgs.settings.getDisabledZoomLevel()) {
+                        for (Cluster cluster : clusters) {
+                            if (cluster.getPixelDistanceFrom(clusterable) < buildTaskArgs.settings.getClusterSize()) {
+                                cluster.add(clusterable);
+                                addedToCluster = true;
+                                break;
+                            }
                         }
                     }
 

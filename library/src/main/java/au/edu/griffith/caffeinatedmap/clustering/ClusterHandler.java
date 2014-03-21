@@ -81,6 +81,7 @@ public class ClusterHandler {
                 buildTaskArgs.settings = mSettings;
                 buildTaskArgs.projection = googleMap.getProjection();
                 buildTaskArgs.clusterables = mClusterables;
+                buildTaskArgs.zoom = (int) mZoomLevel;
                 new ClusterBuildTask(new ClusterBuildTask.BuildTaskCallback() {
                     @Override
                     public void onBuildTaskReturn(List<Cluster> clusters) {

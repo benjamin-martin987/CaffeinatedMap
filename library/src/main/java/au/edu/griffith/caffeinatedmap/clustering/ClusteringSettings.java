@@ -6,6 +6,7 @@ public class ClusteringSettings {
 
     private static final double DEFAULT_CLUSTER_SIZE = 300;
     private static final boolean DEFAULT_COUNT_CLUSTERABLE_TYPES = false;
+    private static final int DEFAULT_DISABLED_AT_ZOOM_LEVEL = 16;
 
     OnClusterIconSelect clusterIconSelect = null;
     OnCMOVisibilityChange cmoVisibilityChange = null;
@@ -13,6 +14,7 @@ public class ClusteringSettings {
 
     private double mClusterSize = DEFAULT_CLUSTER_SIZE;
     private boolean mTypeCounting = DEFAULT_COUNT_CLUSTERABLE_TYPES;
+    private int mDisabledAtZoom = DEFAULT_DISABLED_AT_ZOOM_LEVEL;
 
     public ClusteringSettings setOnClusterIconSelect(OnClusterIconSelect oCIS) {
         clusterIconSelect = oCIS;
@@ -44,6 +46,15 @@ public class ClusteringSettings {
 
     public ClusteringSettings setTypeCountingEnabled(boolean enabled) {
         mTypeCounting = enabled;
+        return this;
+    }
+
+    public int getDisabledZoomLevel() {
+        return mDisabledAtZoom;
+    }
+
+    public ClusteringSettings setDisabledAtZoom(int zoom) {
+        mDisabledAtZoom = zoom;
         return this;
     }
 

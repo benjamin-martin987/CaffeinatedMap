@@ -25,7 +25,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBn18cb4ipwn1lcPG0g0oL3Cnol5slTZ28"/>
+            android:value="AIzaSyCpsDGP09Qwyxw2KIfvGoo3JZtXAfOZK0c"/>
 
         <activity
             android:name="au.edu.griffith.caffeinatedmap.sample.MainActivity"
@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapActivity" />
+        <activity android:name="au.edu.griffith.caffeinatedmap.sample.MapActivity" />
     </application>
 
 </manifest>
