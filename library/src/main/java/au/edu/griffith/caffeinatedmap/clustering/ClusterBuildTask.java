@@ -35,7 +35,6 @@ class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
                     buildTaskArgs.settings = new ClusteringSettings();
                 }
                 for (Clusterable clusterable : buildTaskArgs.clusterables) {
-                    clusterable.clearScreenPosition();
                     clusterable.setScreenPosition(buildTaskArgs.projection);
                     boolean addedToCluster = false;
 
@@ -50,7 +49,7 @@ class ClusterBuildTask extends AsyncTask<BuildTaskArgs, Void, List<Cluster>> {
                     }
 
                     if (!addedToCluster) {
-                        clusters.add(new Cluster(buildTaskArgs.settings, clusterable, buildTaskArgs.projection));
+                        clusters.add(new Cluster(buildTaskArgs.settings, clusterable));
                     }
                 }
             }

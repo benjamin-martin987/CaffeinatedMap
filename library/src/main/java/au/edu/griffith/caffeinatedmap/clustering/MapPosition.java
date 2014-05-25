@@ -30,18 +30,22 @@ abstract class MapPosition {
         }
     }
 
+    void setScreenPosition(Point position) {
+        mScreenPosition = position;
+    }
+
     void clearScreenPosition() {
         mScreenPosition = null;
     }
 
-    public double getPixelDistanceFrom(MapPosition other) {
+    public int getPixelDistanceFrom(MapPosition other) {
         if (mScreenPosition != null && other != null) {
             Point otherPosition = other.getScreenPosition();
             if (otherPosition != null) {
-                return Distance.getHypotenuse(mScreenPosition.x, mScreenPosition.y, otherPosition.x, otherPosition.y);
+                return (int) Distance.getHypotenuse(mScreenPosition.x, mScreenPosition.y, otherPosition.x, otherPosition.y);
             }
         }
-        return 0.0;
+        return 0;
     }
 
 }

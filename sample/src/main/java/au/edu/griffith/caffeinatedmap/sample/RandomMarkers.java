@@ -22,6 +22,7 @@ public class RandomMarkers {
         mRandom = new Random();
         mTypes = new String[]{"Fred", "Jim", "Sally", "Haley"};
 
+        /** Random Markers */
         for (int i = 0; i < numOfMarkers; i++) {
             LatLng latLng = new LatLng(getRandomInRange(-85, 85), getRandomInRange(-180, 180));
 
@@ -33,6 +34,18 @@ public class RandomMarkers {
             marker.type(mTypes[mRandom.nextInt(4)]);
             mCMOList.add(marker);
         }
+
+        /** Static Markers *//*
+        LatLng[] latLng = StaticLatLngs.getStaticLatLngs();
+        for (int i = 0; i < 1978; i++) {
+            mMarkers.add(new MarkerOptions().position(latLng[i]).title("" + i));
+
+            CaffeinatedMarkerOptions marker = new CaffeinatedMarkerOptions();
+            marker.position(latLng[i]);
+            marker.title("" + i);
+            marker.type(mTypes[mRandom.nextInt(4)]);
+            mCMOList.add(marker);
+        }*/
     }
 
     public List<MarkerOptions> getMarkers() {

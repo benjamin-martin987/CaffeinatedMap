@@ -1,6 +1,5 @@
 package au.edu.griffith.caffeinatedmap.clustering;
 
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Cluster extends MapPosition {
     private List<Clusterable> mClusterables;
     private InClusterTypeCounter mTypeCounter;
 
-    public Cluster(ClusteringSettings options, Clusterable clusterable, Projection projection) {
+    public Cluster(ClusteringSettings options, Clusterable clusterable) {
         mKey = KEY_PREFIX + KEY_NUMBER++;
         mOptions = (options != null) ? options : new ClusteringSettings();
         mClusterables = new ArrayList<Clusterable>();
@@ -26,10 +25,10 @@ public class Cluster extends MapPosition {
             mTypeCounter = new InClusterTypeCounter();
         }
 
-        if (clusterable != null && projection != null) {
-            setPosition(clusterable.getPosition());
+        if (clusterable != null) {
             add(clusterable);
-            setScreenPosition(projection);
+            setPosition(clusterable.getPosition());
+            setScreenPosition(clusterable.getScreenPosition());
         }
     }
 

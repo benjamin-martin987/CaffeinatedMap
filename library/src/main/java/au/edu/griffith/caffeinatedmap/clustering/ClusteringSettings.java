@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 
 public class ClusteringSettings {
 
-    private static final double DEFAULT_CLUSTER_SIZE = 300;
+    private static final int DEFAULT_CLUSTER_SIZE = 300;
     private static final boolean DEFAULT_COUNT_CLUSTERABLE_TYPES = false;
     private static final int DEFAULT_DISABLED_AT_ZOOM_LEVEL = 16;
 
@@ -12,7 +12,7 @@ public class ClusteringSettings {
     OnCMOVisibilityChange cmoVisibilityChange = null;
     OnClusteringListener clusteringListener = null;
 
-    private double mClusterSize = DEFAULT_CLUSTER_SIZE;
+    private int mClusterSize = DEFAULT_CLUSTER_SIZE;
     private boolean mTypeCounting = DEFAULT_COUNT_CLUSTERABLE_TYPES;
     private int mDisabledAtZoom = DEFAULT_DISABLED_AT_ZOOM_LEVEL;
 
@@ -31,11 +31,11 @@ public class ClusteringSettings {
         return this;
     }
 
-    public double getClusterSize() {
+    public int getClusterSize() {
         return mClusterSize;
     }
 
-    public ClusteringSettings setClusterSize(double size) {
+    public ClusteringSettings setClusterSize(int size) {
         mClusterSize = size;
         return this;
     }
