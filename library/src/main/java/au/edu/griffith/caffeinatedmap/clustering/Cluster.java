@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Cluster extends MapPosition {
 
-    private static final String KEY_PREFIX = "C";
+    private static final String KEY_PREFIX = "CaffCluster";
     private static int KEY_NUMBER = 1;
 
     private final ClusteringSettings mOptions;

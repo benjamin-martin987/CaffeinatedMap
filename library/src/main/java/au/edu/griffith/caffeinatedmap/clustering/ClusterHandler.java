@@ -68,6 +68,10 @@ public class ClusterHandler {
         return mCurrentClusters;
     }
 
+    public Marker getMarker(String key) {
+        return (mVisibleMarkers.containsKey(key)) ? mVisibleMarkers.get(key) : null;
+    }
+
     public void updateClusters() {
         GoogleMap googleMap = mMapReference.get();
         if (googleMap != null) {

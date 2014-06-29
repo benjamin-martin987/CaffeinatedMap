@@ -2,6 +2,7 @@ package au.edu.griffith.caffeinatedmap;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Marker;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -46,6 +47,10 @@ public class CaffeinatedMap extends BaseCaffeinatedMap {
 
     public ClusteringSettings getClusteringSettings() {
         return (mClusterHandler != null) ? mClusterHandler.getSettings() : null;
+    }
+
+    public Marker getMarker(String key) {
+        return (mClusterHandler != null) ? mClusterHandler.getMarker(key) : null;
     }
 
     @Override
