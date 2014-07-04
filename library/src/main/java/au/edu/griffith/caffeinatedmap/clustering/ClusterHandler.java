@@ -167,9 +167,9 @@ public class ClusterHandler {
 
     private void removeMarkerFromMap(String key) {
         if (mVisibleMarkers.containsKey(key)) {
+            cmoVisibilityCall(key, false);
             mVisibleMarkers.get(key).remove();
             mVisibleMarkers.remove(key);
-            cmoVisibilityCall(key, false);
         }
     }
 
@@ -180,8 +180,8 @@ public class ClusterHandler {
         mVisibleClusters = new HashMap<String, Marker>();
 
         for (String key : mVisibleMarkers.keySet()) {
-            mVisibleMarkers.get(key).remove();
             cmoVisibilityCall(key, false);
+            mVisibleMarkers.get(key).remove();
         }
         mVisibleMarkers = new HashMap<String, Marker>();
     }
