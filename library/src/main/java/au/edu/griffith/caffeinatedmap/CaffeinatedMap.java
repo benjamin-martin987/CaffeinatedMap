@@ -45,6 +45,12 @@ public class CaffeinatedMap extends BaseCaffeinatedMap {
         }
     }
 
+    public void forceUpdate() {
+        if (mClusterHandler != null) {
+            mClusterHandler.forceUpdate();
+        }
+    }
+
     public ClusteringSettings getClusteringSettings() {
         return (mClusterHandler != null) ? mClusterHandler.getSettings() : null;
     }
