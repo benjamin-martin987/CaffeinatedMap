@@ -25,7 +25,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCpsDGP09Qwyxw2KIfvGoo3JZtXAfOZK0c"/>
+            android:value="AIzaSyBRob3CcBZtFl5Wy2lRsL2WuXoKt7GPz-E"/>
 
         <activity
             android:name="au.edu.griffith.caffeinatedmap.sample.MainActivity"
